@@ -1,0 +1,53 @@
+[target]
+title = "東方紅魔郷 ～ the Embodiment of Scarlet Devil"
+version = "1.02h"
+region = "original-japanese"
+filename = "th06.exe"
+size = 512000
+sha256 = "9f76483c46256804792399296619c1274363c31cd8f1775fafb55106fb852245"
+md5 = "fa3d64768b1bfc50703dedc2db92f7fa"
+
+[provenance]
+archive_member = "th06/th06.exe"
+evidence = "User-supplied archive; identity independently agrees with pinned GensokyoClub target requirement."
+
+[pe]
+machine = "i386"
+image_base = "0x00400000"
+entry_point = "0x0045D746"
+size_of_image = 3051520
+headers_raw_size = 4096
+linker_version = "7.0"
+text_start = "0x00401000"
+text_end = "0x00469A5E"
+text_virtual_size = 428639
+text_raw_offset = "0x00001000"
+text_raw_size = 430080
+
+[[pe.sections]]
+name = ".text"
+rva = "0x00001000"
+virtual_size = 428639
+raw_offset = "0x00001000"
+raw_size = 430080
+
+[[pe.sections]]
+name = ".rdata"
+rva = "0x0006A000"
+virtual_size = 47996
+raw_offset = "0x0006A000"
+raw_size = 49152
+
+[[pe.sections]]
+name = ".data"
+rva = "0x00076000"
+virtual_size = 2562556
+raw_offset = "0x00076000"
+raw_size = 24576
+
+[[pe.sections]]
+name = ".rsrc"
+rva = "0x002E8000"
+virtual_size = 2400
+raw_offset = "0x0007C000"
+raw_size = 4096

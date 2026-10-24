@@ -1,0 +1,11 @@
+/.private/
+/.analysis/
+/.tools/
+/_reference/
+/build/
+/ghidra-project/
+/resources/*.exe
+/resources/*.dat
+/resources/*.ico
+__pycache__/
+*.pyc

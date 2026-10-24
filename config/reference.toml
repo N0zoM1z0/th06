@@ -1,0 +1,6 @@
+[gensokyoclub]
+repository = "https://github.com/GensokyoClub/th06"
+commit = "7411374cef282756ef5a8984ce896fb8db797e9e"
+license = "CC0-1.0"
+checkout = "_reference/gensokyoclub-th06"
+target_sha256 = "9f76483c46256804792399296619c1274363c31cd8f1775fafb55106fb852245"
