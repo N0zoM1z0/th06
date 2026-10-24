@@ -21,7 +21,7 @@ Target only the original Japanese 1.02h PE32 executable pinned in
   compared. Structural equality is diagnostic only.
 - Mapping, ownership, source presence, compilation, strict exact and runtime
   behavior are separate claims. Unknown origin/boundary debt must remain
-  visible; never shrink a denominator to make a percentage meet the goal.
+  visible; never change ownership or shrink a denominator to inflate coverage.
 - Before accepting changes, run `scripts/verify-target.py`,
   `scripts/validate-tracking.py --require-target`, affected exact replay and CI.
 - Accepted units require reproducible build receipts, pinned source/toolchain,

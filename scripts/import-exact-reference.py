@@ -15,7 +15,7 @@ def main():
     receipt=json.loads((out/'build-receipt.json').read_text());sources={r['object']:r['source'] for r in receipt['commands']}
     # Identity review is independent of matching: these are compiler-emitted
     # default constructors, deleting wrappers and an exit callback, not written
-    # authored bodies. The conservative 509-entry score already exceeds 98%.
+    # authored bodies. Preserve the conservative 509-entry measurement separately.
     implicit=['AsciiManager','StageMenu','Stage','Enemy','BulletTypeSprites','GuiImpl','GuiMsgVm','ItemManager','Player','PlayerBombInfo','MainMenu']
     default_names={f'th06::{n}::{n}' for n in implicit}
     def generated(f):return f['name'] in default_names or 'scalar_deleting_destructor' in f['name'] or f['address']==0x469a30

@@ -40,7 +40,7 @@ The initial conservative named scope includes PBG3, WinMain and the upstream
 GameErrorContext destructor label; the latter is now reviewed as compiler
 exit callback `Global.obj::_$E10`. SDK inline helpers and compiler startup are
 separate. Unknown inventory entries and uncovered code remain review debt.
-A 98% named-scope result alone cannot close the project's 98% goal.
+A named-scope percentage does not establish reviewed authored coverage.
 
 `compare-coff-function.py --unit NAME` follows th095's canonical manifest
 replay. Raw positional mode reports structural diagnostics only.

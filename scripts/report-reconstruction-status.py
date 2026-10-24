@@ -16,6 +16,6 @@ def status():
     total=union((int(r['address'],0),int(r['address'],0)+int(r['size'])) for r in authored)
     exact=union((int(r['address'],0),int(r['address'],0)+int(r['size'])) for r in accepted)
     review=json.loads((ROOT/'config/boundary-review.json').read_text())
-    return {'authored_functions':len(authored),'exact_functions':len(accepted),'authored_bytes':total,'exact_bytes':exact,'authored_exact_percent':100*exact/total,'goal_percent':98,'unreviewed_game_gap_bytes':review['unreviewed_game_gap_bytes'],'unmapped_ghidra_game_entries':review['unmapped_ghidra_game_entries'],'compiler_functions':sum(r['origin']=='compiler' for r in origins),'library_functions':sum(r['origin']=='library' for r in origins),'conservative_reference_exact_percent':100*review['conservative_reference_exact_bytes']/review['conservative_reference_bytes']}
+    return {'authored_functions':len(authored),'exact_functions':len(accepted),'authored_bytes':total,'exact_bytes':exact,'authored_exact_percent':100*exact/total,'unreviewed_game_gap_bytes':review['unreviewed_game_gap_bytes'],'unmapped_ghidra_game_entries':review['unmapped_ghidra_game_entries'],'compiler_functions':sum(r['origin']=='compiler' for r in origins),'library_functions':sum(r['origin']=='library' for r in origins),'conservative_reference_exact_percent':100*review['conservative_reference_exact_bytes']/review['conservative_reference_bytes']}
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--summary',action='store_true');p.parse_args();print(json.dumps(status(),indent=2))

@@ -5,15 +5,14 @@
 </p>
 
 Source reconstruction of the original Japanese TH06 1.02h executable.
-The **98% authored exact bytes goal is achieved**: **493 / 493 reviewed
-authored functions, 238,624 / 238,624 bytes (100%)**, reproduced from maintained
-source by complete comparisons with full relocation inventories.
+The maintained source reproduces **493 / 493 reviewed authored functions,
+238,624 / 238,624 bytes (100%)** through complete comparisons with full
+relocation inventories.
 
 The unmodified [GensokyoClub reference](https://github.com/GensokyoClub/th06)
 at `7411374` reaches **99.9979%** in the initial conservative named scope:
 508 / 509 functions, 241,025 / 241,030 bytes. The remaining five bytes are a
-compiler-generated exit callback mislabeled as a destructor. The original
-scope already exceeds 98% before ownership corrections. See
+compiler-generated exit callback mislabeled as a destructor. See
 [progress](docs/PROGRESS.md) and the [boundary review](docs/BOUNDARY_AUDIT.md).
 
 | Target property | Required value |

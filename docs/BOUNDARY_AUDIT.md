@@ -2,7 +2,7 @@
 
 The original target is pinned in `config/target.toml`. The unmodified reference
 was measured before changing its ownership labels: 508 / 509 named functions,
-241,025 / 241,030 exact bytes (99.9979256%). The score already meets 98%.
+241,025 / 241,030 exact bytes (99.9979256%).
 
 The maintained denominator is 493 authored functions / 238,624 bytes. Sixteen
 entries (2,406 bytes) were independently classified as compiler emission:

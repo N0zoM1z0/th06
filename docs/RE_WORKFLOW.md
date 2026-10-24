@@ -16,6 +16,7 @@ Reference reproduction:
 
 ```
 python3 scripts/build-reference.py
+python3 scripts/link-reference.py
 python3 scripts/reference-baseline.py
 ```
 
@@ -24,8 +25,8 @@ its per-file flags, compiles one object at a time and removes PCH/PDB output.
 The reference script does not overwrite the maintained match ledger.
 
 Never add original code/data to the repository, call REA, run GUI tools or
-report structural comparisons as strict exact. The target goal is at least
-98% authored exact bytes with a reviewed denominator.
+report structural comparisons as strict exact. Report authored exact bytes
+against the reviewed denominator, with compiler and library coverage separate.
 
 The completed checkpoint contains 493 canonical authored units. Use
 `python3 scripts/build.py` for a cold maintained compile/link, followed by
