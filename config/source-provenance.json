@@ -1,0 +1,367 @@
+{
+  "repository": "https://github.com/GensokyoClub/th06",
+  "commit": "7411374cef282756ef5a8984ce896fb8db797e9e",
+  "license": "CC0-1.0",
+  "files": [
+    {
+      "path": "src/AnmIdx.hpp",
+      "sha256": "c63eb57b81fb4e0d119d925c3815cda871af59f1fb861474ff864713d9c52a5e"
+    },
+    {
+      "path": "src/AnmManager.cpp",
+      "sha256": "178bbc10702156fe324ca99459831a48b0bde52689872194f2fbe112a4327b2f"
+    },
+    {
+      "path": "src/AnmManager.hpp",
+      "sha256": "5067bf8a1d1faee96f21096ebd7adf97b728aa1e31c8a5ab77c478a4a25e9879"
+    },
+    {
+      "path": "src/AnmVm.hpp",
+      "sha256": "25bfd90f51779d3c2436256eda5b68e1c91a077891e689d895cf9f7be414e7a2"
+    },
+    {
+      "path": "src/AsciiManager.cpp",
+      "sha256": "c19f265a50935b345cb0c622c04201b20ecc60a1d5d1b3671152b564aa009acf"
+    },
+    {
+      "path": "src/AsciiManager.hpp",
+      "sha256": "d7d2db8a41b8f59c2a0e5f84546853960826106a3619e3eccd7e7663c4a951ba"
+    },
+    {
+      "path": "src/BombData.cpp",
+      "sha256": "c497e979b8addb505f4ef89764658a11f4a027448d4a02652517024af1043a4d"
+    },
+    {
+      "path": "src/BombData.hpp",
+      "sha256": "ffb0fea11b7a8ed81f67a4c70d9b54bfb0ec3816360b5d40779e883e6686f8a1"
+    },
+    {
+      "path": "src/BuildVersion.hpp",
+      "sha256": "397a8aaec3c77fc62198eef47c42129ba01e9b25bd4e9a2263afa0b5ff58586d"
+    },
+    {
+      "path": "src/BulletData.cpp",
+      "sha256": "0923300cb5eabf4e9044be52fbe235c9720baace30fd98106a2b2a25f453749a"
+    },
+    {
+      "path": "src/BulletData.hpp",
+      "sha256": "14493b2f843347889403bc10bda9cbcafa9afdaa1b0ebe5a1c49ad1504aeb680"
+    },
+    {
+      "path": "src/BulletManager.cpp",
+      "sha256": "3f67f6a4e4cabcc5499cc9c02759a931f292761f84544a73168cc354f3b351b3"
+    },
+    {
+      "path": "src/BulletManager.hpp",
+      "sha256": "30a2983c6a2213163babd0d0d1bdc50946c1e59dcb5b8bba1431a34f568b1bdd"
+    },
+    {
+      "path": "src/Chain.hpp",
+      "sha256": "639479f9bf58fc4353d93c85c621b460ab5b00545bb3e76389368da26fadd93f"
+    },
+    {
+      "path": "src/ChainPriorities.hpp",
+      "sha256": "208289dddc6b3d3301190bf7da2eecf5226a2491363c7766755b94c78c264149"
+    },
+    {
+      "path": "src/EclManager.cpp",
+      "sha256": "73035a8f4799c9d3cef329e1b1738c2554339a49237c27352fda547c8052f79a"
+    },
+    {
+      "path": "src/EclManager.hpp",
+      "sha256": "2ad4c59a4c3c5904bef9e6f2f1e35c44a6b16c50e8969bdf8d432ca38833320d"
+    },
+    {
+      "path": "src/Effect.hpp",
+      "sha256": "a67667ffd5934798892ccc77b396ac8fea6eb13577289e4a16a0d88a4e6a3381"
+    },
+    {
+      "path": "src/EffectManager.cpp",
+      "sha256": "47b8fd6c9e00c69ed3081030ec2471c5ff328b2304f795a76fdb59891794184b"
+    },
+    {
+      "path": "src/EffectManager.hpp",
+      "sha256": "37fd51417f2aeeb293a85f6b925fd82dd6e3c69482e87caff15b19d9290c054a"
+    },
+    {
+      "path": "src/Ending.cpp",
+      "sha256": "cee12b740b4396767164048d9de083f9e6deb1a9831071314431a9374ec1d62e"
+    },
+    {
+      "path": "src/Ending.hpp",
+      "sha256": "a1824d1dd1758437d1e3dcd88a806c114753a6f60a90cf41c9d09bc62baecc5f"
+    },
+    {
+      "path": "src/Enemy.hpp",
+      "sha256": "f26dc74972deccf339eeecb5517d351fe946f1818085d6051db7464e34cc3a52"
+    },
+    {
+      "path": "src/EnemyEclInstr.cpp",
+      "sha256": "0d24e8c39b25ee311104932cf4d70b5ed672e5b2c19d9868695a0cc468ba2cac"
+    },
+    {
+      "path": "src/EnemyEclInstr.hpp",
+      "sha256": "2f80f87a1b7952b432ff7d8cf9181c89dafe195ccf44263dfe0455b8d5e69e5e"
+    },
+    {
+      "path": "src/EnemyManager.cpp",
+      "sha256": "b4693866b8bf306127e420605f66e4adb1ad46bf0e610d21f1d79e2400969a70"
+    },
+    {
+      "path": "src/EnemyManager.hpp",
+      "sha256": "e29c4d8bff933df3ed7a649e4b0dc06367f18d02408a5d622fbbf569b36607cb"
+    },
+    {
+      "path": "src/GameManager.cpp",
+      "sha256": "9dced9ac1a0af298dc0261010ef5b8e7a02e3a766d66a78b379601959eb7313f"
+    },
+    {
+      "path": "src/GameManager.hpp",
+      "sha256": "ded6e74a1a2f314a5489f5b8cfc2c745de6878f1b7874d7f1f06e12177732697"
+    },
+    {
+      "path": "src/Global.cpp",
+      "sha256": "bea89dc5d1db85de565dc225673c66e5eeab03cbafb71805e78d915b046cb472"
+    },
+    {
+      "path": "src/Global.hpp",
+      "sha256": "e44fe7f4ffec72e98cbaa05955caf3ce67833324dd3390cf67b3a2b82f30e40e"
+    },
+    {
+      "path": "src/Gui.cpp",
+      "sha256": "df1c6205e3e5e1a62c536712c29225931427db30dd69088847c0642f27192a7b"
+    },
+    {
+      "path": "src/Gui.hpp",
+      "sha256": "db0cf32bcb87ab708ef9792443b50a9d2eb06c2d9ac9a4167e08180d15528b61"
+    },
+    {
+      "path": "src/ItemManager.cpp",
+      "sha256": "842108e8b5747c8c619d7417fe2ba7e9bb3b6445cc5565478f59d2a7ad1079bf"
+    },
+    {
+      "path": "src/ItemManager.hpp",
+      "sha256": "e4abce7f0dd37d18a93caf2dff71ddd75881dd98c98f76f4128afc683c3d4daf"
+    },
+    {
+      "path": "src/MainMenu.cpp",
+      "sha256": "c35ed74ca5e07230e80a5d681086a931eb7923f65589936df5fffaede04ceabf"
+    },
+    {
+      "path": "src/MainMenu.hpp",
+      "sha256": "cf877c7a6605e8867112a56fa5cfa6a933033e514efdceb47ab78020da63df2c"
+    },
+    {
+      "path": "src/MidiOutput.cpp",
+      "sha256": "a75b2167a86a7d8e0cec04129171d036d6740abebae91822ce400df0e6d8878d"
+    },
+    {
+      "path": "src/MidiOutput.hpp",
+      "sha256": "f2a1be6f6849e3124a3abe163b36f2d0a9cc1ed67f4438f054e59c430301eb07"
+    },
+    {
+      "path": "src/MusicRoom.cpp",
+      "sha256": "98fe67294582e76a78d094ebdf1feca2469447fd03d63f6ba9fd66c7e803f14e"
+    },
+    {
+      "path": "src/MusicRoom.hpp",
+      "sha256": "aa6a1d4269bec6292883476e96f3faa456ecc08f76d56e38102828edb4303553"
+    },
+    {
+      "path": "src/Player.cpp",
+      "sha256": "bdbe96f17dbf5c6d9eb3e005c85b74061462893a371c3a26f9eda452f6d8d89a"
+    },
+    {
+      "path": "src/Player.hpp",
+      "sha256": "3593c563a3502ea0587feb7db2fcf0846f3d2fd1cac701058b26376f6b435bed"
+    },
+    {
+      "path": "src/ReplayData.hpp",
+      "sha256": "d9014d4940f6c160cb7468b3ac2c043ab0925ecbb86dd87a7875e69c1121b61c"
+    },
+    {
+      "path": "src/ReplayManager.cpp",
+      "sha256": "e570efc171994afc12578aac4087cd608672bb4c949dadcc898f21057176c0a5"
+    },
+    {
+      "path": "src/ReplayManager.hpp",
+      "sha256": "043b26923b3c4ec169a5f230c43c9cfcfd778d8f41971cc7fa4c42269a334a39"
+    },
+    {
+      "path": "src/ResultScreen.cpp",
+      "sha256": "93512a59cd49d613052aa7b2718cab03d8fdc7c26dc71b4c84a658132a2758c0"
+    },
+    {
+      "path": "src/ResultScreen.hpp",
+      "sha256": "df7070ea682658d74195ff2ced5722d41ecc818a88ba39fe96cf84fffd7aab82"
+    },
+    {
+      "path": "src/ScreenEffect.cpp",
+      "sha256": "0825ab1b404d76ab8cace5ea9263fa26acf1774d2c5e56daec7b1b4e11b43aa8"
+    },
+    {
+      "path": "src/ScreenEffect.hpp",
+      "sha256": "5b33ff3c5824a7dec9a9cdcfd1e85eaa23c9cc280539f9f5b919f58c94458bbf"
+    },
+    {
+      "path": "src/SoundPlayer.cpp",
+      "sha256": "2af6ed628dc7b7a74a4b91b2f40434360ff654e4016a777b9ade3b1619909828"
+    },
+    {
+      "path": "src/SoundPlayer.hpp",
+      "sha256": "b2503e7961d2eaf581eb52a1c5f3f0bb6573860d7ffbc1b9318330b04a9041c4"
+    },
+    {
+      "path": "src/Stage.cpp",
+      "sha256": "91275989681e47cca1a2bb8b29b897d11c493c9055ad7d10e085ebc283dac3a0"
+    },
+    {
+      "path": "src/Stage.hpp",
+      "sha256": "9050dc1a7876e9230488961cab00e0b22bfbecd489aa2a905398a59abf24c646"
+    },
+    {
+      "path": "src/StageMenu.hpp",
+      "sha256": "72e4f176433f32ea45fd7667e834c5c61d25ce6cb42a7d17531cb7a66a6274e2"
+    },
+    {
+      "path": "src/Supervisor.cpp",
+      "sha256": "78a54d6846ae15f556242caaec7c3baec9c0976a7bad9f3c2cbc8600beafe846"
+    },
+    {
+      "path": "src/Supervisor.hpp",
+      "sha256": "c75e12f5b76da078e4a1a9d70070613e965e2a1beee7e634603e56a8541b8ae2"
+    },
+    {
+      "path": "src/TextHelper.cpp",
+      "sha256": "5d5987dfd61bf7f91fba1e615e04e54bc554d0560ae08e28febeefd1147b3648"
+    },
+    {
+      "path": "src/TextHelper.hpp",
+      "sha256": "085e3d8e8aab979ba0f63f52ef09ef41b1ecc774a262374bb1409d9eef090d12"
+    },
+    {
+      "path": "src/ZunBool.hpp",
+      "sha256": "1467375fc94f2e73f98f2d3f533a64d78a382cae77a02bf516b4fe6e5314f7ec"
+    },
+    {
+      "path": "src/ZunColor.hpp",
+      "sha256": "363f55ee2e369d6893ab53fd24e2a1ca0b5c5dc7d5082b82bebf5b94f7d87a2b"
+    },
+    {
+      "path": "src/ZunMath.hpp",
+      "sha256": "aac7226adabbed525a11be3d3e37d5a264ef04536f46b1ef2af2fc812b329eeb"
+    },
+    {
+      "path": "src/ZunResult.hpp",
+      "sha256": "0721fe5d4c45647e5f563b28e344f144c7a7e46ecf1eb9d6eaba98027f8c918f"
+    },
+    {
+      "path": "src/ZunTimer.hpp",
+      "sha256": "7f5d321d97a604a691ac67ba6127a7856075d98c339df054ef704f63ef817137"
+    },
+    {
+      "path": "src/decomp.hpp",
+      "sha256": "3e5d45903c2090db4504880d53e1b1cac06f5ea23810aa94aca7bdc7721a7013"
+    },
+    {
+      "path": "src/dxutil.hpp",
+      "sha256": "e6f578e6c9ecba74dff3a0db7e84f6ed55edaaaf4e4d99258e71d03019d2716d"
+    },
+    {
+      "path": "src/i18n.tpl",
+      "sha256": "b00614da0a4bfbb216d23a82516d95bde9e63bb94b086482ce7e950b391e6c36"
+    },
+    {
+      "path": "src/main.cpp",
+      "sha256": "49ab59dad8e9f1392de9975bce33d6a29fabd601036326b7da468f35b073549c"
+    },
+    {
+      "path": "src/pbg3/FileAbstraction.cpp",
+      "sha256": "5e956e417aea09628255e3472aafac98446ecb6acf51fff0edbb708ac2f50e87"
+    },
+    {
+      "path": "src/pbg3/FileAbstraction.hpp",
+      "sha256": "2d8f02d59d1e173e0fa52af306b03e025d9415ee9583b1cc7bdfae4882abe3ca"
+    },
+    {
+      "path": "src/pbg3/IPbg3Reader.cpp",
+      "sha256": "de00df4c32a9387e57809eb3390bfe8d14acf2f494f1f06ade71937813070bbb"
+    },
+    {
+      "path": "src/pbg3/IPbg3Reader.hpp",
+      "sha256": "d426017c1974101d96f48b552cb1e7bf8fe401248b80e58fb5b6db08b41af9bb"
+    },
+    {
+      "path": "src/pbg3/IPbg3Writer.cpp",
+      "sha256": "ddcf3a03733476bdf231f1415b393ef701623def19d30a0f6e793d4cb38249ec"
+    },
+    {
+      "path": "src/pbg3/IPbg3Writer.hpp",
+      "sha256": "69da1c4db0f0241712230b41b4d6bcaf9ba3a6c6a9c56ab9455d51b39020723d"
+    },
+    {
+      "path": "src/pbg3/LzEncode.cpp",
+      "sha256": "983e6e1d5f97b784ffaf784802e2cdc6d27e82723670d56fbab1f4f453b6c268"
+    },
+    {
+      "path": "src/pbg3/LzEncode.hpp",
+      "sha256": "7c47e791684bc69ed02e910681fa43553d10df53ae297300ebbe0f9a54c4d509"
+    },
+    {
+      "path": "src/pbg3/LzssTree.hpp",
+      "sha256": "cfff43af4804d108b6615bf8b1f25c60cc7f4c6bfae957b68afa2fa14da24f1f"
+    },
+    {
+      "path": "src/pbg3/MemoryPbg3Reader.cpp",
+      "sha256": "3562f55bb95b3dadf1b99ce258dd1e7274faab6d4a100bd801f8ea00d17ab8bc"
+    },
+    {
+      "path": "src/pbg3/MemoryPbg3Reader.hpp",
+      "sha256": "b46d9b72eeaae848674378547c4e05b4e0783417f974b91b716a020f82b28d74"
+    },
+    {
+      "path": "src/pbg3/Pbg3Archive.cpp",
+      "sha256": "304f466656865ba2bc4ec6d4934ce2cbdc39a51a7bc2228b9e7dd86631f7a188"
+    },
+    {
+      "path": "src/pbg3/Pbg3Archive.hpp",
+      "sha256": "c46dbf7cbbdf226f7b3657f4d09e929f28c8c95d5fd8d7deb99d0f2654c45ae7"
+    },
+    {
+      "path": "src/pbg3/Pbg3Reader.cpp",
+      "sha256": "3e5484eabb45e451e1b50ca0d7588feda54791030a21929d4d90d8ae24b48f71"
+    },
+    {
+      "path": "src/pbg3/Pbg3Reader.hpp",
+      "sha256": "5b7764e57e87a10d1a32169f5a1651fb05edaadd76a9aa5b20bf498302e8d7d0"
+    },
+    {
+      "path": "src/pbg3/Pbg3Writer.cpp",
+      "sha256": "c8ba7a791f906b8c6bbc8f5fb1be819da4e3d4e0735dc9c48bba78db9122dd75"
+    },
+    {
+      "path": "src/pbg3/Pbg3Writer.hpp",
+      "sha256": "eeea8b5b6a07a47ca86f0beb1b9c200573ba7e0f3baedbed975f194b1505699f"
+    },
+    {
+      "path": "src/stdafx.h",
+      "sha256": "a6de7516ebce10d23df3dcccae936484505e62c99d9b9b1867a850466b30b989"
+    },
+    {
+      "path": "src/th06.hpp",
+      "sha256": "b60fb1880db617001deddf044fb7ce622e62d4155ccc7a21b326fa7b7e631099"
+    },
+    {
+      "path": "src/th06.rc",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/zwave.cpp",
+      "sha256": "53b0dea75d5a9e05a4bf01fc0195b70b35b575ce5588d2c52a5e448ee559bfe9"
+    },
+    {
+      "path": "src/zwave.hpp",
+      "sha256": "54b5f12a867da04a3c80215dc142ea6ba38b195ba1b7d607f0e0a52fb6cf3389"
+    }
+  ]
+}

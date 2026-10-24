@@ -221,8 +221,8 @@ def inventory_args(pe: dict[str, object]) -> list[str]:
     return [
         "-postScript",
         "ExportInventory.java",
-        str((ROOT / "config" / "functions.csv").resolve()),
-        str((ROOT / "config" / "function-origins.csv").resolve()),
+        str((ROOT / "config" / "ghidra-functions.csv").resolve()),
+        str((ROOT / "config" / "ghidra-function-origins.csv").resolve()),
         str(pe["text_start"]),
         str(pe["text_end"]),
         "ghidra-12.1.3-initial-inventory",

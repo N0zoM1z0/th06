@@ -15,6 +15,9 @@ import json
 from pathlib import Path
 import struct
 import tomllib
+import re
+
+from evidence import check_build
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,7 +113,12 @@ def object_function(
             raise ValueError(
                 "aux-less symbol is not a function in a code section"
             )
-        size = expected_size
+        peers = [s for s in symbols.values() if s['type'] == 0x20 and s['section'] == symbol['section']]
+        if len(peers) != 1 or int(symbol['value']) != 0 or not int(section['flags']) & 0x1000:
+            raise ValueError('aux-less extent requires one complete function COMDAT')
+        size = int(section['size'])
+        if expected_size != size:
+            raise ValueError('aux-less comparison truncates the complete COMDAT extent')
         if int(symbol["value"]) + size > int(section["size"]):
             raise ValueError("expected function extent exceeds its COFF section")
     start = int(section["raw_offset"]) + int(symbol["value"])
@@ -137,6 +145,14 @@ def object_function(
                 "addend": struct.unpack_from("<I", code, local_offset)[0],
             }
         )
+    occupied=set()
+    for relocation in relocations:
+        offset=int(relocation['offset'])
+        if offset+4>len(code) or int(relocation['type_id']) not in COFF_RELOCATION_NAMES:
+            raise ValueError('unsupported or boundary-crossing COFF relocation')
+        fields=set(range(offset,offset+4))
+        if fields & occupied:raise ValueError('overlapping COFF relocation fields')
+        occupied.update(fields)
     return code, relocations
 
 
@@ -237,6 +253,27 @@ def compare(path: Path, symbol: str, address: int, expected_size: int) -> dict[s
     }
 
 
+def compare_linked_unit(name: str, unit: dict) -> dict:
+    check_build(ROOT, unit, linked=True)
+    address=int(unit['target_address']);size=int(unit['size']);extent=int(unit.get('compare_size',size))
+    if extent<size:raise ValueError('linked comparison truncates the accepted extent')
+    code,relocations=object_function(ROOT/str(unit['object']),str(unit['symbol']),extent)
+    if len(code)!=extent:raise ValueError('linked unit does not cover the complete COFF extent')
+    actual=sorted((int(r['offset']),str(r['type']),str(r['symbol'])) for r in relocations)
+    expected=sorted((int(r['offset']),str(r['type']),str(r['symbol'])) for r in unit.get('relocations',[]))
+    if actual!=expected:raise ValueError('linked unit relocation inventory differs')
+    if any(int(r['type_id']) not in (6,20) or int(r['offset'])+4>extent for r in relocations):raise ValueError('unsupported/cross-boundary linked relocation')
+    addresses=set()
+    for line in (ROOT/str(unit['map'])).read_text(errors='replace').splitlines():
+        match=re.match(r'\s+[0-9a-fA-F]{4}:[0-9a-fA-F]{8}\s+(\S+)\s+([0-9a-fA-F]{8})\s',line)
+        if match and match[1]==unit['symbol']:addresses.add(int(match[2],16))
+    if addresses!={address}:raise ValueError('linked symbol address differs from canonical target anchor')
+    generated=pe_bytes_at((ROOT/str(unit['image'])).read_bytes(),address,extent)
+    target=pe_bytes_at(verified_target(),address,extent)
+    differences=[i for i,(a,b) in enumerate(zip(generated,target)) if a!=b]
+    return {'unit':name,'result':'exact' if not differences else 'mismatch','method':'linked-raw-full-extent','symbol':unit['symbol'],'target_address':f'0x{address:08X}','size':size,'matched_bytes':size-sum(i<size for i in differences),'compared_size':extent,'matched_compared_bytes':extent-len(differences),'object':unit['object'],'relocations':relocations,'first_differences':[{'offset':hex(i),'object':generated[i],'target':target[i]} for i in differences[:32]]}
+
+
 def compare_unit(name: str) -> dict[str, object]:
     with UNITS_MANIFEST.open("rb") as stream:
         manifest = tomllib.load(stream)
@@ -246,6 +283,8 @@ def compare_unit(name: str) -> dict[str, object]:
     unit = units[name]
     if not isinstance(unit, dict):
         raise ValueError(f"invalid match unit {name!r}")
+    if unit.get('kind')=='linked':return compare_linked_unit(name,unit)
+    check_build(ROOT,unit)
 
     size = int(unit["size"])
     compare_size = int(unit.get("compare_size", size))

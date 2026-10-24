@@ -1,0 +1,351 @@
+#pragma once
+#include "ItemManager.hpp"
+#include "SoundPlayer.hpp"
+#include "ZunBool.hpp"
+#include "ZunColor.hpp"
+#include "ZunMath.hpp"
+#include "ZunResult.hpp"
+#include "decomp.hpp"
+#include <Windows.h>
+#include <d3dx8math.h>
+
+namespace th06
+{
+// Forward declaration to avoid include loop.
+struct Enemy;
+struct EnemyEclContext;
+struct EnemyManager;
+
+enum EclVarId
+{
+    ECL_VAR_I0 = -10001,
+    ECL_VAR_I1 = -10002,
+    ECL_VAR_I2 = -10003,
+    ECL_VAR_I3 = -10004,
+    ECL_VAR_F0 = -10005,
+    ECL_VAR_F1 = -10006,
+    ECL_VAR_F2 = -10007,
+    ECL_VAR_F3 = -10008,
+    ECL_VAR_IC0 = -10009,
+    ECL_VAR_IC1 = -10010,
+    ECL_VAR_IC2 = -10011,
+    ECL_VAR_IC3 = -10012,
+    ECL_VAR_DIFFICULTY = -10013,
+    ECL_VAR_RANK = -10014,
+    ECL_VAR_SELF_POS_X = -10015,
+    ECL_VAR_SELF_POS_Y = -10016,
+    ECL_VAR_SELF_POS_Z = -10017,
+    ECL_VAR_PLAYER_POS_X = -10018,
+    ECL_VAR_PLAYER_POS_Y = -10019,
+    ECL_VAR_PLAYER_POS_Z = -10020,
+    ECL_VAR_PLAYER_ANGLE = -10021,
+    ECL_VAR_ENEMY_TIMER = -10022,
+    ECL_VAR_PLAYER_DISTANCE = -10023,
+    ECL_VAR_ENEMY_LIFE = -10024,
+    ECL_VAR_PLAYER_SHOT = -10025,
+};
+
+struct TimelineInstrArgs
+{
+    u32 uintVar1;
+    u32 uintVar2;
+    u32 uintVar3;
+    u16 ushortVar1;
+    u16 ushortVar2;
+    u32 uintVar4;
+
+    D3DXVECTOR3 *Var1AsVec()
+    {
+        return (D3DXVECTOR3 *)&this->uintVar1;
+    }
+};
+
+struct TimelineInstr
+{
+    i16 time;
+    i16 arg0;
+    i16 opCode;
+    i16 size;
+    TimelineInstrArgs args;
+};
+
+struct EclRawInstrAnmSetDeathArgs
+{
+    i8 deathParticle1;
+    i8 deathParticle2;
+    i8 deathAnm3;
+};
+ZUN_ASSERT_TYPE(EclRawInstrAnmSetDeathArgs, 0x3, 1);
+
+struct EclRawInstrBulletArgs
+{
+    i16 sprite;
+    i16 color;
+    EclVarId count1;
+    EclVarId count2;
+    f32 speed1;
+    f32 speed2;
+    f32 angle1;
+    f32 angle2;
+    i32 flags;
+};
+ZUN_ASSERT_TYPE(EclRawInstrBulletArgs, 0x20, 4);
+
+struct EclRawInstrLaserArgs
+{
+    i16 sprite;
+    i16 color;
+    f32 angle;
+    f32 speed;
+    f32 startOffset;
+    f32 endOffset;
+    f32 startLength;
+    f32 width;
+    i32 startTime;
+    i32 duration;
+    i32 despawnDuration;
+    i32 hitboxStartTime;
+    i32 hitboxEndDelay;
+    i32 flags;
+};
+ZUN_ASSERT_TYPE(EclRawInstrLaserArgs, 0x34, 4);
+
+struct EclRawInstrSpellcardEffectArgs
+{
+    i32 effectColorId;
+    D3DXVECTOR3 pos;
+    f32 effectDistance;
+};
+ZUN_ASSERT_TYPE(EclRawInstrSpellcardEffectArgs, 0x14, 4);
+
+struct EclRawInstrLaserOffsetArgs
+{
+    i32 laserId;
+    D3DXVECTOR3 offset;
+};
+ZUN_ASSERT_TYPE(EclRawInstrLaserOffsetArgs, 0x10, 4);
+
+struct EclRawInstrSpellcardStartArgs
+{
+    i16 spellcardSprite;
+    i16 spellcardId;
+    char spellcardName[34]; // BUG(?): All other instructions are DWORD aligned, this feels like a mistake
+};
+ZUN_ASSERT_TYPE(EclRawInstrSpellcardStartArgs, 0x26, 2);
+
+struct EclRawInstrEnemyCreateArgs
+{
+    i32 subId;
+    D3DXVECTOR3 pos;
+    i16 life;
+    i16 itemDrop;
+    i32 score;
+};
+ZUN_ASSERT_TYPE(EclRawInstrEnemyCreateArgs, 0x18, 4);
+
+struct EclRawInstr
+{
+    i32 time;
+    i16 opCode;
+    i16 offsetToNext;
+    unreferenced_fields(0x1);
+    // Bitfield where each bit tells us whether we should skip this instruction
+    // on that difficulty (1) or run it (0).
+    u8 skipForDifficulty;
+    unreferenced_fields(0x2);
+    unsigned char args[];
+};
+ZUN_ASSERT_TYPE(EclRawInstr, 0xC, 4);
+
+struct EclRawHeader
+{
+    i16 subCount;
+    i16 mainCount;
+    // NOTE: This is actually fixed at 3 and not a placeholder for dynamic offsets
+    TimelineInstr *timelineOffsets[3];
+    EclRawInstr *subOffsets[];
+};
+ZUN_ASSERT_TYPE(EclRawHeader, 0x10, 4);
+
+enum EclOpcode
+{
+    ECL_OPCODE_NOP,
+    ECL_OPCODE_ENEMY_DELETE,
+    ECL_OPCODE_JUMP,
+    ECL_OPCODE_LOOP,
+    ECL_OPCODE_SET_INT,
+    ECL_OPCODE_SET_FLOAT,
+    ECL_OPCODE_SET_INT_RAND,
+    ECL_OPCODE_SET_INT_RAND_MIN,
+    ECL_OPCODE_SET_FLOAT_RAND,
+    ECL_OPCODE_SET_FLOAT_RAND_MIN,
+    ECL_OPCODE_SET_VAR_SELF_X,
+    ECL_OPCODE_SET_VAR_SELF_Y,
+    ECL_OPCODE_SET_VAR_SELF_Z,
+    ECL_OPCODE_MATH_INT_ADD,
+    ECL_OPCODE_MATH_INT_SUB,
+    ECL_OPCODE_MATH_INT_MUL,
+    ECL_OPCODE_MATH_INT_DIV,
+    ECL_OPCODE_MATH_INT_MOD,
+    ECL_OPCODE_MATH_INC,
+    ECL_OPCODE_MATH_DEC,
+    ECL_OPCODE_MATH_FLOAT_ADD,
+    ECL_OPCODE_MATH_FLOAT_SUB,
+    ECL_OPCODE_MATH_FLOAT_MUL,
+    ECL_OPCODE_MATH_FLOAT_DIV,
+    ECL_OPCODE_MATH_FLOAT_MOD,
+    ECL_OPCODE_MATH_LINE_ANGLE,
+    ECL_OPCODE_MATH_REDUCE_ANGLE,
+    ECL_OPCODE_CMP_INT,
+    ECL_OPCODE_CMP_FLOAT,
+    ECL_OPCODE_JUMP_LSS,
+    ECL_OPCODE_JUMP_LEQ,
+    ECL_OPCODE_JUMP_EQU,
+    ECL_OPCODE_JUMP_GRE,
+    ECL_OPCODE_JUMP_GEQ,
+    ECL_OPCODE_JUMP_NEQ,
+    ECL_OPCODE_CALL,
+    ECL_OPCODE_RET,
+    ECL_OPCODE_CALL_LSS,
+    ECL_OPCODE_CALL_LEQ,
+    ECL_OPCODE_CALL_EQU,
+    ECL_OPCODE_CALL_GRE,
+    ECL_OPCODE_CALL_GEQ,
+    ECL_OPCODE_CALL_NEQ,
+    ECL_OPCODE_MOVE_POSITION,
+    ECL_OPCODE_MOVE_AXIS_SPEED,
+    ECL_OPCODE_MOVE_VELOCITY,
+    ECL_OPCODE_MOVE_ANGULAR_VELOCITY,
+    ECL_OPCODE_MOVE_SPEED,
+    ECL_OPCODE_MOVE_ACCELERATION,
+    ECL_OPCODE_MOVE_RAND,
+    ECL_OPCODE_MOVE_RAND_IN_BOUNDS,
+    ECL_OPCODE_MOVE_TOWARDS_PLAYER,
+    ECL_OPCODE_MOVE_VELOCITY_INTERP_DECELERATE,
+    ECL_OPCODE_MOVE_VELOCITY_INTERP_DECELERATE_FAST,
+    ECL_OPCODE_MOVE_VELOCITY_INTERP_ACCELERATE,
+    ECL_OPCODE_MOVE_VELOCITY_INTERP_ACCELERATE_FAST,
+    ECL_OPCODE_MOVE_POSITION_INTERP_LINEAR,
+    ECL_OPCODE_MOVE_POSITION_INTERP_DECELERATE,
+    ECL_OPCODE_MOVE_POSITION_INTERP_DECELERATE_FAST,
+    ECL_OPCODE_MOVE_POSITION_INTERP_ACCELERATE,
+    ECL_OPCODE_MOVE_POSITION_INTERP_ACCELERATE_FAST,
+    ECL_OPCODE_MOVE_AS_INTERP_DECELERATE,
+    ECL_OPCODE_MOVE_AS_INTERP_DECELERATE_FAST,
+    ECL_OPCODE_MOVE_AS_INTERP_ACCELERATE,
+    ECL_OPCODE_MOVE_AS_INTERP_ACCELERATE_FAST,
+    ECL_OPCODE_MOVE_BOUNDS_SET,
+    ECL_OPCODE_MOVE_BOUNDS_DISABLE,
+    ECL_OPCODE_BULLET_FAN_AIMED,
+    ECL_OPCODE_BULLET_FAN,
+    ECL_OPCODE_BULLET_CIRCLE_AIMED,
+    ECL_OPCODE_BULLET_CIRCLE,
+    ECL_OPCODE_BULLET_OFFSET_CIRCLE_AIMED,
+    ECL_OPCODE_BULLET_OFFSET_CIRCLE,
+    ECL_OPCODE_BULLET_RANDOM_ANGLE,
+    ECL_OPCODE_BULLET_RANDOM_SPEED,
+    ECL_OPCODE_BULLET_RANDOM,
+    ECL_OPCODE_SHOOT_INTERVAL,
+    ECL_OPCODE_SHOOT_INTERVAL_DELAYED,
+    ECL_OPCODE_SHOOT_DISABLE,
+    ECL_OPCODE_SHOOT_ENABLE,
+    ECL_OPCODE_SHOOT_NOW,
+    ECL_OPCODE_SHOOT_OFFSET,
+    ECL_OPCODE_BULLET_EFFECTS,
+    ECL_OPCODE_BULLET_CANCEL,
+    ECL_OPCODE_BULLET_SOUND,
+    ECL_OPCODE_LASER_CREATE,
+    ECL_OPCODE_LASER_CREATE_AIMED,
+    ECL_OPCODE_LASER_INDEX,
+    ECL_OPCODE_LASER_ROTATE,
+    ECL_OPCODE_LASER_ROTATE_FROM_PLAYER,
+    ECL_OPCODE_LASER_OFFSET,
+    ECL_OPCODE_LASER_TEST,
+    ECL_OPCODE_LASER_CANCEL,
+    ECL_OPCODE_SPELLCARD_START,
+    ECL_OPCODE_SPELLCARD_END,
+    ECL_OPCODE_ENEMY_CREATE,
+    ECL_OPCODE_ENEMY_KILL_ALL,
+    ECL_OPCODE_ANM_SET_MAIN,
+    ECL_OPCODE_ANM_SET_POSES,
+    ECL_OPCODE_ANM_SET_SLOT,
+    ECL_OPCODE_ANM_DEATH_EFFECTS,
+    ECL_OPCODE_BOSS_SET,
+    ECL_OPCODE_SPELLCARD_EFFECT,
+    ECL_OPCODE_ENEMY_SET_HITBOX,
+    ECL_OPCODE_ENEMY_FLAG_COLLISION,
+    ECL_OPCODE_ENEMY_FLAG_CAN_TAKE_DAMAGE,
+    ECL_OPCODE_EFFECT_SOUND,
+    ECL_OPCODE_ENEMY_FLAGS_DEATH,
+    ECL_OPCODE_DEATH_CALLBACK_SUB,
+    ECL_OPCODE_ENEMY_INTERRUPT_SET,
+    ECL_OPCODE_ENEMY_INTERRUPT,
+    ECL_OPCODE_ENEMY_LIFE_SET,
+    ECL_OPCODE_PHASE_TIMER_SET,
+    ECL_OPCODE_LIFE_CALLBACK_THRESHOLD,
+    ECL_OPCODE_LIFE_CALLBACK_SUB,
+    ECL_OPCODE_TIMER_CALLBACK_THRESHOLD,
+    ECL_OPCODE_TIMER_CALLBACK_SUB,
+    ECL_OPCODE_ENEMY_FLAG_INTERACTABLE,
+    ECL_OPCODE_EFFECT_PARTICLE,
+    ECL_OPCODE_DROP_ITEMS,
+    ECL_OPCODE_ANM_FLAG_ROTATION,
+    ECL_OPCODE_EX_INS_CALL,
+    ECL_OPCODE_EX_INS_REPEAT,
+    ECL_OPCODE_ECL_TIME_ADD,
+    ECL_OPCODE_DROP_ITEM_ID,
+    ECL_OPCODE_STD_UNPAUSE,
+    ECL_OPCODE_BOSS_SET_LIFE_COUNT,
+    ECL_OPCODE_DEBUG_WATCH,
+    ECL_OPCODE_ANM_INTERRUPT_MAIN,
+    ECL_OPCODE_ANM_INTERRUPT_SLOT,
+    ECL_OPCODE_ENEMY_FLAG_DISABLE_CALLSTACK,
+    ECL_OPCODE_BULLET_RANK_INFLUENCE,
+    ECL_OPCODE_ENEMY_FLAG_INVISIBLE,
+    ECL_OPCODE_PHASE_ADVANCE,
+    ECL_OPCODE_LASER_CLEAR_ALL,
+    ECL_OPCODE_SPELLCARD_FLAG_TIMEOUT,
+};
+
+enum TimelineOpcode
+{
+    TIMELINE_OPCODE_ENEMY_CREATE,
+    TIMELINE_OPCODE_DUMMY_CREATE,
+    TIMELINE_OPCODE_ENEMY_CREATE_MIRROR,
+    TIMELINE_OPCODE_DUMMY_CREATE_MIRROR,
+    TIMELINE_OPCODE_ENEMY_CREATE_RANDOM,
+    TIMELINE_OPCODE_DUMMY_CREATE_RANDOM,
+    TIMELINE_OPCODE_ENEMY_CREATE_MIRROR_RANDOM,
+    TIMELINE_OPCODE_DUMMY_CREATE_MIRROR_RANDOM,
+    TIMELINE_OPCODE_MSG_READ,
+    TIMELINE_OPCODE_MSG_WAIT,
+    TIMELINE_OPCODE_BOSS_INTERRUPT,
+    TIMELINE_OPCODE_PLAYER_POWER,
+    TIMELINE_OPCODE_BOSS_WAIT,
+};
+
+struct EclManagerExtraData
+{
+    unreferenced_fields(0x80);
+    f32 starAngleTable[6];
+    unreferenced_fields(0x68);
+    D3DXVECTOR3 coords[8];
+};
+ZUN_ASSERT_TYPE(EclManagerExtraData, 0x160, 4);
+
+struct EclManager
+{
+    ZunResult Load(const char *ecl);
+    void Unload();
+    ZunResult RunEcl(Enemy *enemy);
+    ZunResult CallEclSub(EnemyEclContext *enemyEcl, i16 subId);
+
+    EclRawHeader *eclFile;
+    EclRawInstr **subTable;
+    TimelineInstr *timeline;
+    EclManagerExtraData extra;
+};
+ZUN_ASSERT_TYPE(EclManager, 0x16c, 4);
+
+extern EclManager g_EclManager;
+} // namespace th06

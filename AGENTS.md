@@ -5,7 +5,8 @@ Target only the original Japanese 1.02h PE32 executable pinned in
 `docs/RE_WORKFLOW.md` before changing reconstruction state.
 
 - Do not use REA. Every tool must run headless. Ghidra uses only
-  `scripts/ghidra.py`; Wine clears DISPLAY/WAYLAND_DISPLAY and disables
+  `scripts/ghidra.py`; inventory exports are kept in separate
+  `config/ghidra-*.csv` snapshots, never the maintained acceptance ledgers. Wine clears DISPLAY/WAYLAND_DISPLAY and disables
   winemenubuilder. Do not launch the game or GUI tools.
 - One writable reconstruction session and one compiler process at a time.
   Do not delegate matching. Use low process priority and at most one CPU for
@@ -21,6 +22,8 @@ Target only the original Japanese 1.02h PE32 executable pinned in
 - Mapping, ownership, source presence, compilation, strict exact and runtime
   behavior are separate claims. Unknown origin/boundary debt must remain
   visible; never shrink a denominator to make a percentage meet the goal.
+- Before accepting changes, run `scripts/verify-target.py`,
+  `scripts/validate-tracking.py --require-target`, affected exact replay and CI.
 - Accepted units require reproducible build receipts, pinned source/toolchain,
   relocation manifest and canonical replay. Deduplicate overlapping ranges.
 - No copied target code, incbin, byte arrays, fake locals/returns, arbitrary

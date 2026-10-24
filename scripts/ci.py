@@ -10,7 +10,9 @@ for path in (ROOT/'scripts').glob('*.py'):
 tracked=subprocess.check_output(['git','ls-files'],cwd=ROOT,text=True).splitlines()
 for name in tracked:
     p=Path(name)
-    if p.parts[0] in {'.private','.analysis','.tools','_reference','build','ghidra-project'} or p.suffix.lower() in {'.exe','.dll','.obj','.pch','.pdb','.rar'}:
+    if p.parts[0] in {'.private','.analysis','.tools','_reference','build','ghidra-project'} or p.suffix.lower() in {'.exe','.dll','.obj','.pch','.pdb','.rar','.zip','.7z','.dat','.i64','.idb','.gpr','.lib'}:
         raise SystemExit(f'private/generated artifact tracked: {name}')
 subprocess.run([sys.executable,'-m','unittest','discover','-s','tests','-v'],cwd=ROOT,check=True)
+for script,args in [('validate-tracking.py',[]),('progress.py',['--check'])]:
+    subprocess.run([sys.executable,str(ROOT/'scripts'/script),*args],cwd=ROOT,check=True)
 print('Public source/manifest/artifact checks passed.')

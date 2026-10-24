@@ -20,6 +20,10 @@ marker, because analyzeHeadless can return zero after a script exception.
 Private databases stay below `ghidra-project/`; decompiler hypotheses stay
 below `.analysis/`. Never patch program bytes or launch the GUI.
 
+Inventory exports are private-state observations mirrored into
+`config/ghidra-functions.csv` and `config/ghidra-function-origins.csv`; they do
+not overwrite the maintained function/origin acceptance ledgers.
+
 The initial inventory contains 1,395 Ghidra candidates. This is neither an
 accepted function count nor an authored denominator. Reference mapping has
 1,509 entries; control flow, data/table extents and ownership require review.

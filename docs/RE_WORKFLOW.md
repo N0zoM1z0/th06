@@ -26,3 +26,9 @@ The reference script does not overwrite the maintained match ledger.
 Never add original code/data to the repository, call REA, run GUI tools or
 report structural comparisons as strict exact. The target goal is at least
 98% authored exact bytes with a reviewed denominator.
+
+The completed checkpoint contains 493 canonical authored units. Use
+`python3 scripts/build.py` for a cold maintained compile/link, followed by
+`python3 scripts/replay-exact-units.py`. Build/source/object/image/map hashes
+are checked before replay. `scripts/progress.py` updates the SVG and progress
+document; CI checks that generated progress is current.

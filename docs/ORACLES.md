@@ -18,11 +18,27 @@ read-only constant section. Never use target instruction operands to solve
 relocations. Missing, conflicting or unsupported relocations fail closed.
 A relocation-masked structural match earns no strict exact credit.
 
+A second strict route compares the final linked image at the original symbol
+address. It requires the entire COFF extent, the complete relocation inventory,
+a unique matching linker-map anchor and equality of every linked byte. The
+image is produced entirely from source and libraries; it contains no injected
+original code. The comparator checks maintained source hashes, compiler and
+frontend identity, object hashes, all linked inputs, linker identity, image
+hash and map hash. Thus relocation bytes are independently generated, not
+masked or solved from the original instruction.
+
+When two original symbols share a name, the independently generated linked
+image may select one existing named target address. This is used for the two
+DebugPrint copies. The generated destination must already be in the independent
+name mapping; the original operand never selects it. Accepted fixed relocation
+values and their evidence are preserved in `config/relocation-evidence.csv`.
+
 The reference baseline is kept separate from maintained authored progress.
 Function names, extents and ownership imported from upstream remain
 provisional until reconciled with target control flow and Ghidra inventory.
-The provisional named authored scope includes PBG3, WinMain and the named
-GameErrorContext destructor. SDK inline helpers and compiler startup are
+The initial conservative named scope includes PBG3, WinMain and the upstream
+GameErrorContext destructor label; the latter is now reviewed as compiler
+exit callback `Global.obj::_$E10`. SDK inline helpers and compiler startup are
 separate. Unknown inventory entries and uncovered code remain review debt.
 A 98% named-scope result alone cannot close the project's 98% goal.
 

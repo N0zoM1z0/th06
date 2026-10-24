@@ -16,3 +16,17 @@ repository = "https://github.com/archaic-msvc/msvc700.git"
 commit = "97fe4cdeaeb0bb934591d4b05eb52c2e8ab3e34b"
 compiler_sha256 = "05be307f04d8c3a9c211b77e85a63992be4642f14b4de31c04f9bb3d7bb1d65f"
 frontend_sha256 = "30c3affd786752b4a037c4b4f035b7962d1fb5a335366e093bc73d0eb02e5558"
+
+compiler_version = "13.00.9466"
+linker_sha256 = "1560d85164dfb763dd13f90f33ff9c6f1cd80f2afada03eed8d0a314593581f1"
+pragma_source_sha256 = "e00b321a1bb3aa55ad719e9b48a7eba88707ff2383e609c57fbb2be2fc9860cc"
+
+[dx8sdk]
+asset = "dx8sdk.exe"
+url = "https://archive.org/download/dx8sdk/dx8sdk.exe"
+sha256 = "719f8fe4f02af5f435aac4a90bf9ef958210e6bd1d1e9715f26d13b10a73cb6c"
+
+[dx8sdk.files]
+"include/d3d8.h" = "3ca75d0512eb882de054bf8d93c1a25dc356e3681d83eaf4e15e7d46d2eb80b0"
+"include/d3dx8.h" = "4dda934ffc04ca0a7ee7551ee524c1eb9e5ec85cb345202ea0661c71feff122c"
+"lib/d3dx8.lib" = "32148094cebbbe9b55f7769787cdde5926ca01014e072844f5152d25072e1f44"

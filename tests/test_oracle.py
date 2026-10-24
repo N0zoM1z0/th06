@@ -62,6 +62,57 @@ class OracleTests(unittest.TestCase):
         with self.assertRaises(ValueError):m.compare_unit('unit')
     def test_diagnostic_structural_is_separate(self):
         self.assertEqual(m.compare(self.root/'unit.obj','func',0x401000,6)['result'],'structural-exact')
+    def linked_manifest(self):
+        (self.root/'linked.exe').write_bytes(self.target)
+        (self.root/'linked.map').write_text(' 0001:00000000 func 00401000 f synthetic.obj\n')
+        text=self.manifest.replace('[units.unit]','[units.unit]\nkind="linked"\nimage="linked.exe"\nmap="linked.map"')
+        m.UNITS_MANIFEST.write_text(text)
+        return text
+    def test_linked_complete_extent_exact(self):
+        self.linked_manifest()
+        self.assertEqual(m.compare_unit('unit')['result'],'exact')
+    def test_linked_relocation_byte_change_fails(self):
+        self.linked_manifest();data=bytearray(self.target);data[0x401]^=1
+        (self.root/'linked.exe').write_bytes(data)
+        self.assertEqual(m.compare_unit('unit')['result'],'mismatch')
+    def test_linked_map_anchor_change_fails(self):
+        self.linked_manifest();(self.root/'linked.map').write_text(' 0001:00000000 func 00401001 f synthetic.obj\n')
+        with self.assertRaises(ValueError):m.compare_unit('unit')
+    def test_linked_missing_relocation_inventory_fails(self):
+        text=self.linked_manifest();m.UNITS_MANIFEST.write_text(text.split('relocations=')[0])
+        with self.assertRaises(ValueError):m.compare_unit('unit')
+    def auxless_object(self):
+        data=bytearray(coff(b'\xb8\0\0\0\0\xc3',[(1,6)]));ptr=struct.unpack_from('<I',data,8)[0]
+        struct.pack_into('<I',data,12,2);struct.pack_into('<I',data,56,0x60001020)
+        struct.pack_into('<I',data,60+6+4,1);data[ptr+17]=0;del data[ptr+18:ptr+36]
+        (self.root/'unit.obj').write_bytes(data)
+    def test_auxless_complete_comdat_exact(self):
+        self.auxless_object();self.assertEqual(m.compare_unit('unit')['result'],'exact')
+    def test_auxless_truncated_comdat_fails(self):
+        self.auxless_object();m.UNITS_MANIFEST.write_text(self.manifest.replace('size=6','size=5'))
+        with self.assertRaises(ValueError):m.compare_unit('unit')
+    def evidence_fixture(self):
+        import json
+        from evidence import check_build
+        (self.root/'config').mkdir();(self.root/'src').mkdir();(self.root/'src/unit.cpp').write_text('int unit() { return 1; }\n')
+        compiler=self.root/'cl.exe';compiler.write_bytes(b'synthetic compiler identity')
+        (self.root/'c1xx.dll').write_bytes(b'synthetic frontend identity')
+        dig=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+        (self.root/'config/tools.lock.toml').write_text('[msvc70]\ncompiler_sha256="'+dig(compiler)+'"\n')
+        receipt={'compiler_sha256':dig(compiler),'frontend_sha256':dig(self.root/'c1xx.dll'),'source_tree':[{'path':'src/unit.cpp','sha256':dig(self.root/'src/unit.cpp')}],'commands':[{'object':'unit.obj','object_sha256':dig(self.root/'unit.obj'),'command':[str(compiler)]}]}
+        (self.root/'build.json').write_text(json.dumps(receipt))
+        return check_build,{'build_receipt':'build.json','object':'unit.obj'}
+    def test_source_build_evidence_valid(self):
+        check,unit=self.evidence_fixture();self.assertIsNotNone(check(self.root,unit))
+    def test_changed_source_fails_receipt(self):
+        check,unit=self.evidence_fixture();(self.root/'src/unit.cpp').write_text('changed source')
+        with self.assertRaises(ValueError):check(self.root,unit)
+    def test_changed_object_fails_receipt(self):
+        check,unit=self.evidence_fixture();(self.root/'unit.obj').write_bytes(b'changed object')
+        with self.assertRaises(ValueError):check(self.root,unit)
+    def test_changed_frontend_fails_receipt(self):
+        check,unit=self.evidence_fixture();(self.root/'c1xx.dll').write_bytes(b'changed frontend')
+        with self.assertRaises(ValueError):check(self.root,unit)
     def test_overlap_deduplication(self):
         spec=importlib.util.spec_from_file_location('baseline',ROOT/'scripts/reference-baseline.py');b=importlib.util.module_from_spec(spec);spec.loader.exec_module(b)
         self.assertEqual(b.union_size([(10,20),(15,25),(25,30)]),20)
