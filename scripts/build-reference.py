@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Compile pinned upstream sources privately, one compiler process at a time."""
 import argparse
+
+from shared_runtime import command as shared_command
 import hashlib
 import json
 import os
@@ -31,7 +33,7 @@ def environment():
     return env
 
 def run(args, cwd, log, env):
-    cmd = ['taskset','-c',str(min(os.sched_getaffinity(0))),'nice','-n','15','wine', *map(str,args)]
+    cmd = ['taskset','-c',str(min(os.sched_getaffinity(0))),'nice','-n','15',*shared_command('wine'), *map(str,args)]
     result = subprocess.run(cmd, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     log.write_bytes(result.stdout)
     if result.returncode:

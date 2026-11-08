@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from shared_runtime import command as shared_command
+
 import argparse
 import os
 from pathlib import Path
@@ -232,7 +234,7 @@ def inventory_args(pe: dict[str, object]) -> list[str]:
 def run_headless(arguments: list[str], required_marker: str) -> None:
     ghidra_home, analyzer = find_analyzer()
     command = [
-        "nice", "-n", "15", "taskset", "-c", str(min(os.sched_getaffinity(0))), str(analyzer),
+        "nice", "-n", "15", "taskset", "-c", str(min(os.sched_getaffinity(0))), *shared_command("ghidra"),
         str(PROJECT_DIR),
         PROJECT_NAME,
         *arguments,

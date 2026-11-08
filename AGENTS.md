@@ -36,3 +36,13 @@ Target only the original Japanese 1.02h PE32 executable pinned in
   `_reference/` for private state. Do not edit the pinned upstream checkout.
 - Cite GensokyoClub/th06 and retain the CC0 license for reused material.
 - Commit messages: `gpt-6.1-sol: ...`.
+
+## Shared Factory runtime
+
+Follow [the shared tools instructions](docs/SHARED_TOOLS.md). Ghidra/JDK and
+Wine executables are shared through Factory; repository scripts also work
+without MCP. Use `scripts/shared_runtime.py` and the existing compiler/analysis
+frontends. Keep this game's prefix, analyzer project, Java home/cache, target
+and compiler profile isolated. Do not install duplicate tools or inherit
+another game's `WINEPREFIX`. This shared-runtime procedure supersedes older
+per-repository installation instructions; pinned versions/hashes still apply.
