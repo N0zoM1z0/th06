@@ -1,5 +1,11 @@
 # Current handoff
 
+> Current workflow: follow the **Highest priority** section in `AGENTS.md`.
+> Prefer affected exact comparisons and useful Markdown knowledge. Ordinary
+> notes do not require full CI, native replay or document-hash/pin refreshes.
+> Older broad validation instructions apply only when their impact is relevant.
+
+
 The maintained checkpoint reproduces 493 / 493 reviewed authored functions,
 238,624 / 238,624 exact bytes (100%). Canonical replay
 passed all 493 units after a cold maintained-source compile/link.

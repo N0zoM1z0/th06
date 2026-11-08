@@ -1,5 +1,11 @@
 # Reconstruction workflow
 
+> Current workflow: follow the **Highest priority** section in `AGENTS.md`.
+> Prefer affected exact comparisons and useful Markdown knowledge. Ordinary
+> notes do not require full CI, native replay or document-hash/pin refreshes.
+> Older broad validation instructions apply only when their impact is relevant.
+
+
 1. Inspect Git status and read the handoff, target manifest and oracle policy.
 2. Run `python3 scripts/verify-target.py` and `python3 scripts/ghidra.py check`.
 3. Consult the provisional function/origin ledgers. Confirm complete control
